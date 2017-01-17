@@ -1,9 +1,12 @@
-const React = require('react');
+// const React = require('react');
+import React from 'react';
 
-from = (obj) => React.createElement(
-  obj.type, obj.props, obj.children.map(
-    (child) => (typeof child === 'string') ? child : from(child)
+
+const outOf = (obj) => React.createElement(
+  obj.type, obj.props, ...obj.children.map(
+    (child) => (typeof child === 'string') ? child : outOf(child)
   )
 )
 
-module.exports.from = from;
+export {outOf};
+// module.exports.from = from;

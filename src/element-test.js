@@ -1,13 +1,14 @@
-({from} = require('./element.js'));
+import { outOf } from './element.js';
+// ({from} = require('./element.js'));
 
 let obj = {
-  type: 'h3',
+  type: 'div',
   children: [
     {
-      type: 'h4',
+      type: 'h2',
       props: {
         className: 'my-class',
-        hidden: false
+        hidden: false,
       },
       children: [
         'This is a text element.'
@@ -17,5 +18,8 @@ let obj = {
   ]
 };
 
-let elt = from(obj);
-console.log(JSON.stringify(elt, null, 2));
+let testElement = outOf(obj);
+// console.log(JSON.stringify(elt, null, 2));
+
+export {testElement};
+// module.exports.myElement = elt;
