@@ -1,46 +1,23 @@
-let root = document.getElementById("root");
-console.log(root.attributes);
+// const htmlparser = require('htmlparser2');
+import htmlparser from 'htmlparser2'
 
-objectType = obj =>
-    obj.__proto__[Object.getOwnPropertySymbols(obj.__proto__)[0]];
-
-arrayFromCollection = coll =>
-    Array(coll.length).fill(0).map((x,i) => coll.item(i));
-
-const htmlElement = document.createElement('s').__proto__
-const nodeList = document.childNodes.__proto__;
-const textNode = document.createTextNode("").__proto__;
-
-const parse = function(dom, vdom) {
-  const pc = prototypeChain(dom);
-  if (pc.includes(htmlElement)) {
-    console.log(dom.nodeName);
-  }
-  if (pc.includes(nodeList)) {
-    console.log(dom);
-  }
-  if (pc.includes(textNode)) {
-    console.log("text node")
-  }
+const myParser = function() {
+  const handler = new htmlparser.DomHandler(function(err, dom) {
+    if (err) {
+      console.log('Parse failed.');
+    } else {
+      console.log('Parse successful.');
+    }
+  });
+  return new htmlparser.Parser(handler);
 }
 
-const prototypeChain = function(obj) {
-  if (Array.isArray(obj)) {
-    let proto = obj[obj.length - 1].__proto__;
-    if (proto === null) {
-      return [...obj, proto];
-    } else {
-      return [...obj, ...prototypeChain([proto])];
-    }
-  } else {
-    let proto = obj.__proto__;
-    return (proto === null) ? [null] : prototypeChain([proto]);
-  }
-} 
+const parse = function(html) {
+  const parser = myParser();
+  parser.write(html);
+  parser.done();
+  return parser._cbs.dom;
+}
 
-
-let t = document.createTextNode("Hi, mom!");
-console.log(prototypeChain(t));
-let h = root.childNodes;
-console.log(prototypeChain(h).find( x => x == htmlElement || x == textNode || x == nodeList ));
-parse(t);
+exports.parse = parse;
+// console.log(parse(html));
