@@ -1,5 +1,7 @@
 import htmlparser from 'htmlparser2'
+import { compile } from 'handlebars';
 import { createElement } from 'react';
+import { connect } from 'react-redux';
 
 const myParser = function() {
   const handler = new htmlparser.DomHandler(function(err, dom) {
@@ -39,6 +41,12 @@ export const render = function(vdom) {
   }
 }
 
-export const Stamp = (props) =>
-  render(parse(props.template(props.context))[0]);
+const mapStateToProps = state => ({
+  source: state.get('source'),
+  context: state.get('context')
+})
+
+export const Stamp = connect(mapStateToProps)(props =>
+  render(parse(compile(props.source)(props.context))[0])
+);
 
