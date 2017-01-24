@@ -31,6 +31,12 @@ const nodeTypes = {
   12: 'NOTATION_NODE',
 }
 
+class ParseError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'ParseError';
+  }
+}
 
 const nodeListToArray = function(nodeList) {
   try {
@@ -46,25 +52,27 @@ const nodeListToArray = function(nodeList) {
   return arr;
 }
 
-const isWhitespace = node => !(nodeTypes[node.nodeType] == 'TEXT_NODE' && node.textContent.trim() == '')
+const isWhitespace = node =>
+  !(nodeTypes[node.nodeType] == 'TEXT_NODE' && node.textContent.trim() == '')
 
 
 let xml2json = function(node) {
 
-  try {
-    if (arguments.length == 0) {
-      throw new TypeError('Not enough arguments. You must pass a DOM node.');
-    } 
-    else if (!(node instanceof Element.__proto__)) {
-      throw new TypeError('Argument must be a DOM node.');
-    }
-  }
-  catch(e) {
-    console.error(e);
+  if (arguments.length == 0) {
+    throw new TypeError('Not enough arguments. You must pass a DOM node.');
+  } 
+  else if (!(node instanceof Element.__proto__)) {
+    throw new TypeError('Argument must be a DOM node.');
   }
 
   switch (nodeTypes[node.nodeType]) {
     case ('ELEMENT_NODE'):
+      // try {
+      if (node.nodeName == 'parsererror') {
+        const childNodesArray = nodeListToArray(node.childNodes);
+        const message = childNodesArray.filter(isWhitespace).map(node => node.textContent).join('\n');
+        throw new ParseError(message);
+      }
       const obj = {type: node.nodeName};
       if (node.attributes.length > 0) {
         const props = {};
@@ -88,5 +96,29 @@ let xml2json = function(node) {
   }
 }
 
+
+const createElement = (type, props, ...children) =>
+  [type, props || {}, [...children]];
+
+
+const render = function(node) {
+  switch (typeof node) {
+    case 'object':
+      return createElement(
+        node.type, node.props || {},
+        ...node.children.map(child => render(child))
+      );
+    case 'string':
+      return node;
+    default:
+      console.log('default');
+  }
+}
+  
+
+
+
 let obj = xml2json(dom);
-console.log(JSON.stringify(obj, null, 2));
+//console.log(JSON.stringify(obj, null, 2));
+let elt = render(obj);
+console.log(JSON.stringify(elt, null, 2));
