@@ -1,6 +1,7 @@
+import React from 'react';
+import {connect} from 'react-redux';
 import {compile} from 'handlebars';
 
-let parser = new DOMParser();
 
 const nodeTypes = {
   1: 'ELEMENT_NODE',
@@ -40,12 +41,12 @@ const nodeListToArray = function(nodeList) {
 
 
 const isWhitespace = node =>
-  !(nodeTypes[node.nodeType] == 'TEXT_NODE' && node.textContent.trim() == '')
+  !(nodeTypes[node.nodeType] === 'TEXT_NODE' && node.textContent.trim() === '')
 
 
 const xml2json = function(node) {
 
-  if (arguments.length == 0) {
+  if (arguments.length === 0) {
     throw new TypeError('Not enough arguments. You must pass a DOM node.');
   } 
   else if (!(node instanceof Element.__proto__)) {
@@ -55,7 +56,7 @@ const xml2json = function(node) {
   switch (nodeTypes[node.nodeType]) {
     case ('ELEMENT_NODE'):
       // try {
-      if (node.nodeName == 'parsererror') {
+      if (node.nodeName === 'parsererror') {
         const childNodesArray = nodeListToArray(node.childNodes);
         const message = childNodesArray.filter(isWhitespace).map(node => node.textContent).join('\n');
         throw new ParseError(message);
@@ -64,7 +65,7 @@ const xml2json = function(node) {
       if (node.attributes.length > 0) {
         const props = {};
         let attr;
-        for (i = 0; i < node.attributes.length; i++) {
+        for (let i = 0; i < node.attributes.length; i++) {
           attr = node.attributes.item(i);
           props[attr.name] = attr.value;
         }
@@ -101,12 +102,25 @@ const render = function(node) {
       console.log('default');
   }
 }
-  
+
+const parser = new DOMParser();
+
+const mapStateToProps = state => ({
+  source: state.get('source'),
+  context: state.get('context')
+});
 
 export const Stamp = connect(mapStateToProps)(
   ({ source, context }) => {
     const str = compile(source)(context);
-    const dom = parser.parseFromString(str, 'text/xml');
-    return render(xml2json(dom));
+    console.log(str);
+    try {
+      const dom = parser.parseFromString(str, 'text/xml');
+      return render(xml2json(dom.children[0]));
+    }
+    catch(e) {
+      console.warn('ParseError');
+      return React.createElement('h3', {}, "ParseError");
+    }
   }
 );
