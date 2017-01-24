@@ -113,7 +113,6 @@ const mapStateToProps = state => ({
 export const Stamp = connect(mapStateToProps)(
   ({ source, context }) => {
     const str = compile(source)(context);
-    console.log(str);
     try {
       const dom = parser.parseFromString(str, 'text/xml');
       return render(xml2json(dom.children[0]));

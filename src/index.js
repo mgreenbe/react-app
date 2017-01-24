@@ -1,14 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Map } from 'immutable';
+import { Map, fromJS } from 'immutable';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import { combineReducers } from 'redux-immutable';
+import { reducer as formReducer } from 'redux-form/immutable';
 import { App } from './App.js';
 import { context, source } from './data.js';
-import { reducer } from './reducers.js';
+import { reducer as editorReducer } from './reducers.js';
 
-const initialState = Map({source, context});
-const store = createStore(reducer, initialState);
+const initialState = fromJS({editor: {source, context}});
+console.log(initialState);
+const reducer = combineReducers({editor: editorReducer});
+// const reducer = myReducer;
+const store = createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
   <Provider store={store}>

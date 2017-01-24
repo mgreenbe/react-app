@@ -14,14 +14,14 @@ export class App extends React.Component {
   handleChange(e) {
     let update = {};
     update[e.target.id] = e.target.value;
-    this.setState(update);
+    this.setState({editor: update});
   }
   updateContext() {
     this.setState({context: JSON.parse(this.state.contextString)});
   }
   render() {
     return (
-      <div id="app" onChange={this.handleChange}>
+      <div>
         <SourceEditor />
         <ContextEditor />
         <Stamp />

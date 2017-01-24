@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { updateSource } from './actions';
 
 const mapStateToProps = state => ({
-  source: state.get('source')
+  source: state.get('editor.source')
 });
 
 const mapDispatchToProps = dispatch => ({
