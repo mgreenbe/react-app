@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { updateContext } from './actions';
 
 const mapStateToProps = state => ({
-  context: state.get('context')
+  context: state.get('editor').get('context')
 });
 
 const mapDispatchToProps = dispatch => ({

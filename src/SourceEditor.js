@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { updateSource } from './actions';
 
 const mapStateToProps = state => ({
-  source: state.get('editor.source')
+  source: state.get('editor').get('source')
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -11,14 +11,15 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export const SourceEditor = connect(mapStateToProps, mapDispatchToProps)(
-  props => (
-    <textarea id="source"
-      data-key="source"
-      spellCheck={false}
-      cols="60"
-      rows="30"
-      value={props.source}
-      onChange={props.handleChange}>
-    </textarea>
-  )
+  props => {
+    return (
+      <textarea id="source"
+        spellCheck={false}
+        cols="60"
+        rows="30"
+        value={props.source}
+        onChange={props.handleChange}>
+      </textarea>
+    )
+  }
 );

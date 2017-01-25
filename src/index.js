@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Map, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
@@ -9,10 +9,8 @@ import { App } from './App.js';
 import { context, source } from './data.js';
 import { reducer as editorReducer } from './reducers.js';
 
-const initialState = fromJS({editor: {source, context}});
-console.log(initialState);
-const reducer = combineReducers({editor: editorReducer});
-// const reducer = myReducer;
+const initialState = fromJS({editor: {source, context}, form: null});
+const reducer = combineReducers({editor: editorReducer, form: formReducer});
 const store = createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(

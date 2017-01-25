@@ -1,11 +1,11 @@
 export const updateContext = e => ({
   type: 'UPDATE_CONTEXT',
-  key: 'editor.context', 
+  key: 'context', 
   value: JSON.parse(e.target.value)
 });
 
 export const updateSource = e => ({
   type: 'UPDATE_SOURCE',
-  key: 'editor.source',
+  key: 'source',
   value: e.target.value,
 })
