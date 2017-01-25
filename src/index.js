@@ -6,10 +6,11 @@ import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { reducer as formReducer } from 'redux-form/immutable';
 import { App } from './App.js';
-import { context, source } from './data.js';
-import { reducer as editorReducer } from './reducers.js';
+import { contextStr, source } from './data.js';
+import { updateContext, reducer as editorReducer } from './reducers.js';
 
-const initialState = fromJS({editor: {source, context}, form: null});
+const initialContextState = updateContext(contextStr);
+const initialState = fromJS({editor: initialContextState, form: null});
 const reducer = combineReducers({editor: editorReducer, form: formReducer});
 const store = createStore(reducer, initialState, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -19,4 +20,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-

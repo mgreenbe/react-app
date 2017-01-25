@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { updateContext } from './actions';
 
 const mapStateToProps = state => ({
-  context: state.get('editor').get('context')
+  contextStr: state.get('editor').get('contextStr'),
+  parseSuccess: state.get('editor').get('parseSuccess')
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -11,14 +12,14 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export const ContextEditor = connect(mapStateToProps, mapDispatchToProps)(
-  props => (
-    <textarea id="context"
-      data-key="context"
+  ({ contextStr, parseSuccess, handleChange }) => (
+    <textarea
       spellCheck={false}
+      style={{borderColor: (parseSuccess) ? 'green' : 'red', borderStyle: 'solid', borderWidth: 'medium'}}
       cols="60"
       rows="30"
-      value={JSON.stringify(props.context, null, 2)}
-      onChange={props.handleChange}>
+      value={contextStr}
+      onChange={handleChange}>
     </textarea>
   )
 );

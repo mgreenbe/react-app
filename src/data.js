@@ -36,7 +36,7 @@ export const source = `<div>
   <button className="btn btn-default" data-action="ADD" data-path="people">Add person</button>
 </div>`
 
-export const context = {
+export const contextObj = {
     people: [
         {
             name: "Matt",
@@ -49,3 +49,4 @@ export const context = {
     ]
 };
  
+export const contextStr = JSON.stringify(contextObj, null, 2);
