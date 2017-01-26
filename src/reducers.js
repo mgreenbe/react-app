@@ -1,4 +1,3 @@
-import { fromJS } from 'immutable'
 export const editorReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE':

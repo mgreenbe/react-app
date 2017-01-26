@@ -1,4 +1,4 @@
-import { fromJS, Map } from 'immutable';
+import { Map } from 'immutable';
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { reducer as formReducer } from 'redux-form/immutable';
@@ -12,8 +12,7 @@ const initializeEditorState = function(contextStr, source) {
   const { parseSuccess, context } = initialContext;
   const { compileSuccess, template } = initialTemplate;
   if (parseSuccess && compileSuccess) {
-    const stampedTemplate = template(context);
-    // console.log(stampedTemplate);
+    const stampedTemplate = template(context.toJS());
     return Object.assign(initialContext, initialTemplate, {stampedTemplate}) 
   } else {
     return Object.assign(initialContext, initialTemplate);
@@ -27,6 +26,7 @@ const initialEditorState = Map(
   //   updateTemplate(source)
   // )
 );
+
 
 const initialState = Map({
   editor: initialEditorState,

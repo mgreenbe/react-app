@@ -42,7 +42,6 @@ const updaters = {
 };
 
 export const updateEditors = e => {
-  let update;
   let action = {type: 'UPDATE'};
   action.update = updaters[e.target.id](e.target.value);
   return action;

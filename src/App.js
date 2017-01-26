@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stamp } from './Stamp.js';
+//import { Stamp } from './Stamp.js';
 import Preview from './Preview.js';
 import { SourceEditor } from './SourceEditor.js';
 import { ContextEditor } from './ContextEditor.js';
