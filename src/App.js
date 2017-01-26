@@ -1,6 +1,6 @@
 import React from 'react';
 //import { Stamp } from './Stamp.js';
-import Preview from './Preview.js';
+import Preview from './xmlToReact.js';
 import { SourceEditor } from './SourceEditor.js';
 import { ContextEditor } from './ContextEditor.js';
 

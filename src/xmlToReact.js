@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { reduxForm } from 'redux-form/immutable';
+import dict from './dict.js';
+
 
 const nodeTypes = {
   1: 'ELEMENT_NODE',
@@ -59,7 +62,7 @@ const xml2json = function(node) {
         const message = childNodesArray.filter(isWhitespace).map(node => node.textContent).join('\n');
         throw new ParseError(message);
       }
-      const obj = {type: node.nodeName};
+      const obj = {type: dict[node.nodeName] || node.nodeName};
       if (node.attributes.length > 0) {
         const props = {};
         let attr;
@@ -100,7 +103,8 @@ const parser = new DOMParser();
 
 const xmlToReactElement = xml => {
   const dom = parser.parseFromString(xml, 'text/xml');
-  return render(xml2json(dom).children[0]);
+  const json = xml2json(dom).children[0];
+  return render(json);
 }
 
 let Preview = ({ stampedTemplate }) => {
@@ -113,6 +117,8 @@ let Preview = ({ stampedTemplate }) => {
 const mapStateToProps = state => ({
   stampedTemplate: state.get('editor').get('stampedTemplate')
 });
+
+Preview = reduxForm({form: 'test'})(Preview);
 
 Preview = connect(mapStateToProps, null)(Preview);
 

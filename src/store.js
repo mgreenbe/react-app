@@ -1,8 +1,8 @@
 import { Map } from 'immutable';
 import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
-import { reducer as formReducer } from 'redux-form/immutable';
-import { contextStr, source } from './data.js';
+import { reducer as formReducer } from 'redux-form';
+import { contextStr, source } from './formdata.js';
 import { editorReducer } from './reducers.js';
 import { updateContext, updateTemplate } from './actions';
 
@@ -29,8 +29,7 @@ const initialEditorState = Map(
 
 
 const initialState = Map({
-  editor: initialEditorState,
-  form: null
+  editor: initialEditorState
 });
 
 const reducer = combineReducers({
@@ -44,6 +43,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
  );
 
-store.subscribe( () => console.log(store.getState()));
+//store.subscribe( () => console.log(store.getState()));
 
 export default store;

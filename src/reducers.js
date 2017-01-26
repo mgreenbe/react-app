@@ -11,7 +11,7 @@ export const editorReducer = (state, action) => {
         return updatedState;
       }
     default:
-      console.log('editorReducer: hit the default')
+      //console.log('editorReducer: hit the default')
       return state;
   }
 } 
