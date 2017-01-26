@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateSource, updateEditors } from './actions';
+import { updateEditors } from './actions';
 
 const mapStateToProps = state => ({
   source: state.get('editor').get('source'),
