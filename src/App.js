@@ -6,7 +6,7 @@ import { ContextEditor } from './ContextEditor.js';
 export const App = () => React.createElement(
   'div',
   null,
-  // React.createElement(SourceEditor),
+  React.createElement(SourceEditor),
   React.createElement(ContextEditor),
   // React.createElement(Stamp)
 );

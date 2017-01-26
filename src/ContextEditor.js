@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateContext } from './actions';
+import { updateContext, updateEditors } from './actions';
 
 const mapStateToProps = state => ({
   contextStr: state.get('editor').get('contextStr'),
@@ -8,12 +8,13 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleChange: e => dispatch(updateContext(e))
+  handleChange: e => dispatch(updateEditors(e))
 });
 
 export const ContextEditor = connect(mapStateToProps, mapDispatchToProps)(
   ({ contextStr, parseSuccess, handleChange }) => (
     <textarea
+      id="context"
       spellCheck={false}
       style={{borderColor: (parseSuccess) ? 'green' : 'red', borderStyle: 'solid', borderWidth: 'medium'}}
       cols="60"
