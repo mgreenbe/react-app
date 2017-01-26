@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => ({
 export const SourceEditor = connect(mapStateToProps, mapDispatchToProps)(
   ({ source, compileSuccess, handleChange }) => {
     return (
-      <textarea id="source"
+      <textarea id="template"
         spellCheck={false}
         style={{borderColor: (compileSuccess) ? 'green' : 'red', borderStyle: 'solid', borderWidth: 'medium'}}
         cols="60"

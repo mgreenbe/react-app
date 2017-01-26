@@ -1,50 +1,49 @@
 import { fromJS } from 'immutable';
 import { compile } from 'handlebars';
 
-export const parseContext = (contextStr) => {
+export const updateContext = (contextStr) => {
+  let contextObj;
   try {
-    const contextObj = JSON.parse(contextStr);
-    return contextObj;
+    contextObj = JSON.parse(contextStr);
   }
   catch(e)
   {
     console.warn('Couldn\'t parse string to JSON');
   }
+  const update = (contextObj) ? {
+    contextStr: JSON.stringify(contextObj, null, 2),
+    context: fromJS(contextObj), parseSuccess: true
+  } : {
+    contextStr,
+    parseSuccess: false
+  };
+  return update;
 }
 
-export const compileSource = (source) => {
+export const updateTemplate = (source) => {
+  let template;
   try {
-    const template = compile(source);
-    return template;
+    template = compile(source);
   }
   catch(e)
   {
-    console.warn('Couldn\'t compile source');
-    // console.error(e);
+    // console.warn('Couldn\'t compile source');
+    console.error(e);
   }
+  const update = (template) 
+    ? {source, template, compileSuccess: true}
+    : {source, compileSuccess: false};
+  return update;
 }
+
+const updaters = {
+  'context': updateContext,
+  'template': updateTemplate
+};
 
 export const updateEditors = e => {
   let update;
   let action = {type: 'UPDATE'};
-  switch (e.target.id) {
-    case 'context':
-      const contextStr = e.target.value;
-      const contextObj = parseContext(contextStr);
-      const parseSuccess = !!contextObj;
-      update = (contextObj) ?
-        {contextStr: JSON.stringify(contextObj, null, 2), context: fromJS(contextObj), parseSuccess} :
-        {contextStr, parseSuccess};
-      action.update = update
-      return action;
-    case 'source':
-      const source = e.target.value;
-      const template = compileSource(source);
-      const compileSuccess = !!template;
-      update = (template) ? {source, template, compileSuccess} : {source, compileSuccess};
-      action.update = update;
-      return action;
-    default:
-      console.log('updateEditors: hit the default')
-  }
+  action.update = updaters[e.target.id](e.target.value);
+  return action;
 }

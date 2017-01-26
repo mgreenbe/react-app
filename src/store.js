@@ -3,7 +3,8 @@ import { createStore } from 'redux';
 import { combineReducers } from 'redux-immutable';
 import { reducer as formReducer } from 'redux-form/immutable';
 import { contextStr, source } from './data.js';
-import { updateContext, updateTemplate, editorReducer } from './reducers.js';
+import { editorReducer } from './reducers.js';
+import { updateContext, updateTemplate } from './actions';
 
 const initializeEditorState = function(contextStr, source) {
   const initialContext = updateContext(contextStr);
