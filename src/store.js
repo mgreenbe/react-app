@@ -5,14 +5,29 @@ import { reducer as formReducer } from 'redux-form/immutable';
 import { contextStr, source } from './data.js';
 import { updateContext, updateTemplate, editorReducer } from './reducers.js';
 
+const initializeEditorState = function(contextStr, source) {
+  const initialContext = updateContext(contextStr);
+  const initialTemplate = updateTemplate(source);
+  const { parseSuccess, context } = initialContext;
+  const { compileSuccess, template } = initialTemplate;
+  if (parseSuccess && compileSuccess) {
+    const stampedTemplate = template(context);
+    // console.log(stampedTemplate);
+    return Object.assign(initialContext, initialTemplate, {stampedTemplate}) 
+  } else {
+    return Object.assign(initialContext, initialTemplate);
+  }
+}
+
 const initialEditorState = Map(
-  Object.assign(
-    updateContext(contextStr),
-    updateTemplate(source)
-  )
+  initializeEditorState(contextStr, source)
+  // Object.assign(
+  //   updateContext(contextStr),
+  //   updateTemplate(source)
+  // )
 );
 
-const initialState = fromJS({
+const initialState = Map({
   editor: initialEditorState,
   form: null
 });

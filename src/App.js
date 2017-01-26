@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stamp } from './Stamp.js';
+import Preview from './Preview.js';
 import { SourceEditor } from './SourceEditor.js';
 import { ContextEditor } from './ContextEditor.js';
 
@@ -8,6 +9,7 @@ const App = () => React.createElement(
   null,
   React.createElement(SourceEditor),
   React.createElement(ContextEditor),
+  React.createElement(Preview)
   // React.createElement(Stamp)
 );
 

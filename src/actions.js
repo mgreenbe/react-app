@@ -1,4 +1,5 @@
-import { compile } from 'handlebars'
+import { fromJS } from 'immutable';
+import { compile } from 'handlebars';
 
 export const parseContext = (contextStr) => {
   try {
@@ -24,7 +25,7 @@ export const compileSource = (source) => {
 }
 
 export const updateEditors = e => {
-  let update
+  let update;
   let action = {type: 'UPDATE'};
   switch (e.target.id) {
     case 'context':
@@ -32,7 +33,7 @@ export const updateEditors = e => {
       const contextObj = parseContext(contextStr);
       const parseSuccess = !!contextObj;
       update = (contextObj) ?
-        {contextStr: JSON.stringify(contextObj, null, 2), contextObj, parseSuccess} :
+        {contextStr: JSON.stringify(contextObj, null, 2), context: fromJS(contextObj), parseSuccess} :
         {contextStr, parseSuccess};
       action.update = update
       return action;

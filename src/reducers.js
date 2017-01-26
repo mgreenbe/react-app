@@ -1,13 +1,14 @@
+import { fromJS } from 'immutable'
 import { compile } from 'handlebars'
 
 export const editorReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE':
       const updatedState = state.merge(action.update);
-      const { parseSuccess, compileSuccess, template, contextObj } = updatedState.toJS();
-      if (parseSuccess && compileSuccess) {
-        const stampedTemplate = template(contextObj);
-        console.log(stampedTemplate);
+      const { parseSuccess, compileSuccess, template, context } = updatedState.toJS();
+      if (parseSuccess && compileSuccess) { // stamp template, render preview
+        const stampedTemplate = template(context);
+        // console.log(stampedTemplate);
         return updatedState.set('stampedTemplate', stampedTemplate);
       } else {
         return updatedState;
@@ -27,9 +28,13 @@ export const updateContext = (contextStr) => {
   {
     console.warn('Couldn\'t parse string to JSON');
   }
-  const update = (contextObj) 
-    ? {contextStr: JSON.stringify(contextObj, null, 2), contextObj, parseSuccess: true}
-    : {contextStr, parseSuccess: false};
+  const update = (contextObj) ? {
+    contextStr: JSON.stringify(contextObj, null, 2),
+    context: fromJS(contextObj), parseSuccess: true
+  } : {
+    contextStr,
+    parseSuccess: false
+  };
   return update;
 }
 
